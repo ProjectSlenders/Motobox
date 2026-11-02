@@ -19,8 +19,6 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 import java.util.HashMap;
 import java.util.Map;

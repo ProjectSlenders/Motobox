@@ -24,6 +24,8 @@ For VS Code's Java project import, set `java.import.gradle.java.home` to your JD
 
 If Gradle still selects a different JVM, pass `"-Dorg.gradle.java.home=$env:JAVA_HOME"` to the wrapper after setting `JAVA_HOME` to JDK 17.
 
+VS Code's Java language server cannot read Kotlin source directly. The Gradle Eclipse model adds compiled Kotlin classes to its classpath and compiles them during project synchronization. After changing Kotlin models, run `.\gradlew.bat compileKotlin` and **Java: Reload Projects**. If unresolved Kotlin imports persist, run **Java: Clean Java Language Server Workspace** and allow the project to reimport. Java imports use the class's package/name regardless of whether its source is `.java` or `.kt`.
+
 ### **Installing**
 Use Fabric Loader for Minecraft 1.20.1. Put the built Motobox JAR and these dependencies in the same game instance's `mods` folder:
 

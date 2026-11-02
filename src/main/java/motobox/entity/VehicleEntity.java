@@ -73,9 +73,6 @@ public class VehicleEntity extends BoatEntity implements RenderableVehicle, Enti
     private RearAttachment rearAttachment;
     private FrontAttachment frontAttachment;
 
-    private static final TrackedData<Boolean> ROTATE_LEFT = DataTracker.registerData(VehicleEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> ROTATE_RIGHT = DataTracker.registerData(VehicleEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-
     private final VehicleStats stats = new VehicleStats();
 
     @Environment(EnvType.CLIENT)

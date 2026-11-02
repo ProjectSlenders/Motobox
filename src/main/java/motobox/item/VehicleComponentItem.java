@@ -5,7 +5,6 @@ import motobox.vehicle.VehicleComponent;
 import motobox.vehicle.VehicleEngine;
 import motobox.vehicle.VehicleWheel;
 import motobox.vehicle.attachment.RearAttachmentType;
-import motobox.vehicle.attachment.rear.TrailerRearAttachment;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;

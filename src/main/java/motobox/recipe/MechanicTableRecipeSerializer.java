@@ -13,8 +13,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
 
 public class MechanicTableRecipeSerializer implements RecipeSerializer<MechanicTableRecipe> {
     public static final MechanicTableRecipeSerializer INSTANCE = new MechanicTableRecipeSerializer();
