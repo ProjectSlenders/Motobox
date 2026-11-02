@@ -25,13 +25,12 @@ Use Fabric Loader for Minecraft 1.20.1. Put the built Motobox JAR and these depe
 - [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin): the build uses 1.10.17+kotlin.1.9.22.
 - [GeckoLib](https://modrinth.com/mod/geckolib): the Fabric release for Minecraft 1.20.1 (the build uses 4.4.2).
 
-These dependencies are available to Gradle during development but are not bundled in the built Motobox JAR. Download their mod JARs separately; do not use Forge or NeoForge releases.
+These dependencies are available to Gradle during development but are not bundled in the built Motobox JAR. Download their mod JARs separately. Do not use Forge or NeoForge releases.
 
 ### **📘 Description**
 With Motobox Vehicle Mod, you can customize your vehicles with a variety of wheels, and engines. The mod adds more than three vehicles, including powered vehicles and a useful trailer, for practical use. You can explore, transport, and race with these vehicles. Modify each vehicle with unique engines and wheels to adjust their speed and adaptability to different terrains. The mod also supports controllers with MidnightControls, which allows you to drive the vehicles using a controller.
 
 **Note:** This is a fork of [Automobility](https://modrinth.com/mod/automobility) with our own spin on things, we had permission to do it.
-
 ![](https://i.imgur.com/j8YAnhl.png)
 
 ### **📚 FAQ**
