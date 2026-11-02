@@ -18,6 +18,12 @@ $env:JAVA_HOME = 'C:\path\to\jdk-17'
 
 On Windows, run `.\gradlew.bat build` from the repository root. On macOS or Linux, run `./gradlew build`. The finished mod JAR is written to `build/libs/`.
 
+Kotlin compiles inside Gradle's JVM to avoid reusing an IDE-started Kotlin daemon running on an incompatible Java version (such as Java 25). The Gradle JVM must still use JDK 17; the Java/Kotlin bytecode target does not select the JVM running the build.
+
+For VS Code's Java project import, set `java.import.gradle.java.home` to your JDK 17 installation in local workspace settings. For Gradle extension tasks, set `gradle.java.home` there too. Do not change `java.jdt.ls.java.home`: the Java language server can use its bundled newer JDK independently.
+
+If Gradle still selects a different JVM, pass `"-Dorg.gradle.java.home=$env:JAVA_HOME"` to the wrapper after setting `JAVA_HOME` to JDK 17.
+
 ### **Installing**
 Use Fabric Loader for Minecraft 1.20.1. Put the built Motobox JAR and these dependencies in the same game instance's `mods` folder:
 
