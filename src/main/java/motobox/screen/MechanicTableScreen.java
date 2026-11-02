@@ -49,6 +49,7 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
     private final Map<Identifier, List<RecipeEntry>> recipes = new HashMap<>();
 
     private OrderedText categoryTitle;
+    private ItemStack hoveredMissingIngredient = ItemStack.EMPTY;
 
     public MechanicTableScreen(MechanicTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -105,6 +106,14 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
+
+        int hoveredRecipe = this.getHoveredRecipe(mouseX, mouseY);
+        if (hoveredRecipe >= 0) {
+            assert this.client != null;
+            context.drawItemTooltip(this.textRenderer, this.handler.recipes.get(hoveredRecipe).getOutput(this.client.world.getRegistryManager()), mouseX, mouseY);
+        } else if (!this.hoveredMissingIngredient.isEmpty()) {
+            context.drawItemTooltip(this.textRenderer, this.hoveredMissingIngredient, mouseX, mouseY);
+        }
     }
 
     private void preDraw() {
@@ -121,19 +130,14 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
         this.drawCategoryBar(context, mouseX, mouseY);
         this.drawRecipes(context, mouseX, mouseY);
 
-        this.drawMissingIngredients(context);
+        this.hoveredMissingIngredient = ItemStack.EMPTY;
+        this.drawMissingIngredients(context, mouseX, mouseY);
     }
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
         context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 0xffffffff, false);
         context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 0x404040, false);
-
-        int hoveredRecipe = this.getHoveredRecipe(mouseX, mouseY);
-        if (hoveredRecipe >= 0) {
-            assert this.client != null;
-            context.drawItemTooltip(this.textRenderer, this.handler.recipes.get(hoveredRecipe).getOutput(this.client.world.getRegistryManager()), mouseX - this.x, mouseY - this.y);
-        }
     }
 
     private void changeCategory(int by) {
@@ -201,20 +205,26 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
         return false;
     }
 
-    protected final void drawMissingIngredient(DrawContext context, Ingredient ing, int x, int y) {
+    protected final void drawMissingIngredient(DrawContext context, Ingredient ing, int x, int y, int mouseX, int mouseY) {
         context.fill(x, y, x + 16, y + 16, 0x45FF0000);
 
         var stacks = ing.getMatchingStacks();
-        ItemStack stack = stacks[MathHelper.floor((float)this.time / 30) % stacks.length];
+        ItemStack stack = stacks[MathHelper.floor((float)this.time / 30) % stacks.length].copy();
         stack.setCount(handler.missingIngredients.get(ing));
+        context.drawItem(stack, x, y);
         context.drawItemInSlot(this.textRenderer, stack, x, y);
 
-        RenderSystem.depthFunc(516);
+        context.getMatrices().push();
+        context.getMatrices().translate(0, 0, 200);
         context.fill(x, y, x + 16, y + 16, 0x30FFFFFF);
-        RenderSystem.depthFunc(515);
+        context.getMatrices().pop();
+
+        if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
+            this.hoveredMissingIngredient = stack;
+        }
     }
 
-    protected void drawMissingIngredients(DrawContext context) {
+    protected void drawMissingIngredients(DrawContext context, int mouseX, int mouseY) {
         var inputInv = this.handler.inputInv;
         var missingIngs = new ArrayDeque<>(this.handler.missingIngredients.keySet());
 
@@ -223,7 +233,7 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
             int y = this.y + 88;
 
             if (inputInv.getStack(i).isEmpty()) {
-                this.drawMissingIngredient(context, missingIngs.removeFirst(), x, y);
+                this.drawMissingIngredient(context, missingIngs.removeFirst(), x, y, mouseX, mouseY);
             }
         }
     }
@@ -339,6 +349,7 @@ public class MechanicTableScreen extends HandledScreen<MechanicTableScreenHandle
 
         assert this.client != null;
         var stack = entry.recipe.getOutput(this.client.world.getRegistryManager());
+        context.drawItem(stack, x, y);
         context.drawItemInSlot(this.textRenderer, stack, x, y);
     }
 
